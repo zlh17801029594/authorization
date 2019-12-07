@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.adcc.authorization.dao.SysLogMapper">
+    <resultMap id="SysLog" type="cn.adcc.authorization.model.SysLog">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="operation" jdbcType="VARCHAR" property="operation"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="params" jdbcType="VARCHAR" property="params"/>
+        <result column="time" jdbcType="BIGINT" property="time"/>
+        <result column="ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    <sql id="SysLogColumn">
+        id, username, operation, method, params, time, ip, create_time
+    </sql>
+    <select id="findById" parameterType="java.lang.Long" resultMap="SysLog">
+        SELECT
+        <include refid="SysLogColumn"/>
+        from log
+        where id = #{id}
+    </select>
+    <insert id="insert" parameterType="cn.adcc.authorization.model.SysLog">
+        insert into
+        log
+        (username, operation, method, params, time, ip, create_time)
+        values
+        (#{username}, #{operation}, #{method}, #{params}, #{time}, #{ip}, #{createTime})
+    </insert>
+</mapper>
