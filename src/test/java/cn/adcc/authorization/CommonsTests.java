@@ -1,5 +1,7 @@
 package cn.adcc.authorization;
 
+import cn.adcc.authorization.model.SysUser;
+import cn.adcc.authorization.utils.BeanPropertiesCopyUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,5 +37,19 @@ public class CommonsTests {
         //opt.get();
         //opt.filter(o -> "s".equals(o));
         System.out.println(opt.filter(o -> o.equals("s")));
+    }
+
+    @Test
+    void TestBeanPropertiesUtils() {
+        SysUser sysUser1 = new SysUser();
+        sysUser1.setNickname("zlh");
+        sysUser1.setPassword("123");
+        System.out.println(sysUser1);
+        SysUser sysUser2 = new SysUser();
+        sysUser2.setNickname("mmm");
+        sysUser2.setPassword("456");
+        System.out.println(sysUser2);
+        BeanPropertiesCopyUtils.copyNotNull(sysUser1, sysUser2, "password, client_secret");
+        System.out.println(sysUser1);
     }
 }

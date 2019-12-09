@@ -11,6 +11,7 @@ public class UsernameAuditorBean implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
         String username = SecurityUtils.getUsername();
-        return Optional.of(username);
+        return Optional.ofNullable(username);
+        //return Optional.of(username);
     }
 }
