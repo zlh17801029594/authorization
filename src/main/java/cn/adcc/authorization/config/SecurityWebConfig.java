@@ -45,9 +45,9 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/b").hasAuthority("read")
                 .antMatchers("/c").hasRole("read")
                 .antMatchers("/user", "/log/*").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
-                .formLogin()
+                .formLogin().and().csrf().disable()
                 /*.successHandler(myAuthenticationSuccessHandler)*/;
     }
 }

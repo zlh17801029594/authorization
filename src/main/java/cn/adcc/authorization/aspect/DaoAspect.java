@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
-@Aspect
+/*@Aspect
 @Component
-@Configuration
+@Configuration*/
 public class DaoAspect {
     private static final String createTime = "createTime";
     private static final String updateTime = "updateTime";

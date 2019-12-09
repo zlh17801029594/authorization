@@ -2,8 +2,20 @@ package cn.adcc.authorization.model;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-@Data
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Getter
+@Setter
+@Entity
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "client_details")
 @ApiModel(value = "SysClientDetails", description = "客户端实体")
 public class SysClientDetails extends BaseModel {
     private String clientId;
