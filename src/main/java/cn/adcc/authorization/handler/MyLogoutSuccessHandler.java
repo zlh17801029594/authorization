@@ -11,7 +11,7 @@ import java.io.IOException;
 @Deprecated
 public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
-    public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        //清理cookie，session、savedRequest中记录得/login?logout
     }
 }

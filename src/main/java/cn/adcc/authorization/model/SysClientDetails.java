@@ -20,6 +20,7 @@ import javax.persistence.Table;
 public class SysClientDetails extends BaseModel {
     private String clientId;
     private String clientSecret;
+    private String clientInfo;
     private String resourceIds;
     private String scope;
     private String authorizedGrantTypes;

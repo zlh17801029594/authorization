@@ -4,6 +4,7 @@ import cn.adcc.authorization.dao.SysUserRepository;
 import cn.adcc.authorization.model.SysUser;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +22,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Primary
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired

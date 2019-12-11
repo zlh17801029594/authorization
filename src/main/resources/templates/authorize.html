@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>用户授权</title>
+</head>
+<body>
+<div class="container" style="padding: 20px;">
+    <p><a th:text="${authorizationRequest.clientId}" th:href="${authorizationRequest.redirectUri}"></a> 将获得以下权限</p>
+    <ul>
+        <li th:each="scope : ${authorizationRequest.scope}">
+            <input type="checkbox" checked disabled />
+            <label th:text="${scope}"></label>
+        </li>
+    </ul>
+    <div style="float: left;">
+        <form id="confirmationForm" name="confirmationForm"
+              action="../oauth/authorize" method="post">
+            <input name="user_oauth_approval" value="true" type="hidden" />
+            <button class="btn btn-primary" type="submit">同意</button>
+        </form>
+        <form id="denialForm" name="denialForm"
+              action="../oauth/authorize" method="post">
+            <input name="user_oauth_approval" value="false" type="hidden" />
+            <button class="btn btn-primary" type="submit">拒绝</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

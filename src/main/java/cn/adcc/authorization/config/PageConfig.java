@@ -11,4 +11,14 @@ public class PageConfig {
     public String login() {
         return "login";
     }
+
+    @GetMapping("/")
+    public String page() {
+        return "index";
+    }
+
+    @GetMapping("/oauth/confirm_access")
+    public String confirm() {
+        return "authorize";
+    }
 }

@@ -68,7 +68,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints.authenticationManager(authenticationManager)
                 .tokenStore(tokenStore)//自定义配置TokenServices时，tokenStore可以不在endpoints重复配置。
                 .reuseRefreshTokens(true)
-                //.approvalStoreDisabled()
+                .approvalStoreDisabled()
                 //.tokenServices(defaultTokenServices())//自定义TokenServices
                 .userDetailsService(userDetailsService)
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
