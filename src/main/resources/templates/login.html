@@ -46,7 +46,15 @@
 				url : '/login',
 				data : $("#login-form").serialize(),
 				success : function(data) {
-					location.href = data.data;
+				    if (data.code === '200'){
+				        if (data.data)
+                            location.href = data.data
+						else
+						    location.href = '/'
+					} else {
+				        $("#info").html(data.msg)
+                        $(obj).attr("disabled", false);
+					}
 				},
 				error : function(xhr, textStatus, errorThrown) {
 					var msg = xhr.responseText;

@@ -1,6 +1,8 @@
 package cn.adcc.authorization.config;
 
 import cn.adcc.authorization.constants.SecurityConstants;
+import cn.adcc.authorization.handler.MyAuthenticationFailureHandler;
+import cn.adcc.authorization.handler.MyAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +36,9 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
 
+    @Autowired
+    private MyAuthenticationFailureHandler myAuthenticationFailureHandler;
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -58,6 +63,7 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .loginPage(SecurityConstants.LOGIN_PAGE)
                 .permitAll()
                 .successHandler(myAuthenticationSuccessHandler)
+                .failureHandler(myAuthenticationFailureHandler)
                 .and().csrf().disable();
     }
 

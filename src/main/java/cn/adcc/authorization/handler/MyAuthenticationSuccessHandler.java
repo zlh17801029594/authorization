@@ -1,4 +1,4 @@
-package cn.adcc.authorization.config;
+package cn.adcc.authorization.handler;
 
 import cn.adcc.authorization.utils.ResultUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +35,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             System.out.println(String.format("无savedRequest"));
             this.clearAuthenticationAttributes(request);
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(objectMapper.writeValueAsString(ResultUtil.success(authentication.getName())));
+            response.getWriter().write(objectMapper.writeValueAsString(ResultUtil.success()));
         } else {
             String targetUrlParameter = this.getTargetUrlParameter();
             if (!this.isAlwaysUseDefaultTargetUrl() && (targetUrlParameter == null || !StringUtils.hasText(request.getParameter(targetUrlParameter)))) {
@@ -49,7 +49,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
                 this.requestCache.removeRequest(request, response);
                 this.clearAuthenticationAttributes(request);
                 response.setContentType("application/json;charset=UTF-8");
-                response.getWriter().write(objectMapper.writeValueAsString(ResultUtil.success(authentication.getName())));
+                response.getWriter().write(objectMapper.writeValueAsString(ResultUtil.success()));
             }
         }
     }
