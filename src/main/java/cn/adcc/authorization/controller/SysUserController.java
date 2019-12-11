@@ -1,7 +1,9 @@
 package cn.adcc.authorization.controller;
 
 import cn.adcc.authorization.model.SysUser;
+import cn.adcc.authorization.response.Result;
 import cn.adcc.authorization.service.SysUserService;
+import cn.adcc.authorization.utils.ResultUtil;
 import cn.adcc.authorization.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +18,9 @@ public class SysUserController {
     private SysUserService sysUserService;
 
     @GetMapping("/findAll")
-    public List<SysUser> getInfo() {
+    public Result getInfo() {
         List<SysUser> sysUsers = sysUserService.findAll();
-        return sysUsers;
+        return ResultUtil.success(sysUsers);
     }
 
     @PostMapping
