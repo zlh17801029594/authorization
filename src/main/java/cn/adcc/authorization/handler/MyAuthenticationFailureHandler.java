@@ -4,9 +4,11 @@ import cn.adcc.authorization.utils.ResponseUtil;
 import cn.adcc.authorization.utils.ResultUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +23,9 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         String errorMsg = "认证失败";
         if (e != null) {
-            if (e instanceof BadCredentialsException) {
+            if (e instanceof UsernameNotFoundException) {
+                errorMsg = "用户不存在";
+            } else if (e instanceof BadCredentialsException) {
                 errorMsg = "密码错误";
             } else if (e instanceof DisabledException) {
                 errorMsg = "当前用户已被禁用";

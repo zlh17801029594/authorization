@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 
-import cn.adcc.authorization.page.AuthorizationController;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanFactoryUtils;
