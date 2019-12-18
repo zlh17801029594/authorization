@@ -75,6 +75,7 @@ public class AuthorizationController extends AbstractEndpoint {
     private OAuth2RequestValidator oauth2RequestValidator = new DefaultOAuth2RequestValidator();
     private String userApprovalPage = "forward:/oauth/confirm_access";
     private String errorPage = "forward:/oauth/error";
+    private String oauth2Login = "oauth2Login";
     private Object implicitLock = new Object();
 
     public AuthorizationController() {
@@ -90,48 +91,31 @@ public class AuthorizationController extends AbstractEndpoint {
 
     @RequestMapping({"/oauth/authorize"})
     public ModelAndView authorize(Map<String, Object> model, @RequestParam Map<String, String> parameters, SessionStatus sessionStatus, Principal principal) {
-        AuthorizationRequest authorizationRequest = this.getOAuth2RequestFactory().createAuthorizationRequest(parameters);
-        Set<String> responseTypes = authorizationRequest.getResponseTypes();
-        if (!responseTypes.contains("token") && !responseTypes.contains("code")) {
-            //throw new UnsupportedResponseTypeException("Unsupported response types: " + responseTypes);
-            return new ModelAndView("oauth2Login");
-        } else if (authorizationRequest.getClientId() == null) {
+        String clientId = (String) parameters.get("client_id");
+        Set<String> responseTypes = OAuth2Utils.parseParameterList((String)parameters.get("response_type"));
+        if (clientId == null) {
             throw new InvalidClientException("A client id must be provided");
-        } else {
-            try {
-                if (principal instanceof Authentication && ((Authentication)principal).isAuthenticated()) {
-                    ClientDetails client = this.getClientDetailsService().loadClientByClientId(authorizationRequest.getClientId());
-                    String redirectUriParameter = (String)authorizationRequest.getRequestParameters().get("redirect_uri");
-                    String resolvedRedirect = this.redirectResolver.resolveRedirect(redirectUriParameter, client);
-                    if (!StringUtils.hasText(resolvedRedirect)) {
-                        throw new RedirectMismatchException("A redirectUri must be either supplied or preconfigured in the ClientDetails");
-                    } else {
-                        authorizationRequest.setRedirectUri(resolvedRedirect);
-                        this.oauth2RequestValidator.validateScope(authorizationRequest, client);
-                        authorizationRequest = this.userApprovalHandler.checkForPreApproval(authorizationRequest, (Authentication)principal);
-                        boolean approved = this.userApprovalHandler.isApproved(authorizationRequest, (Authentication)principal);
-                        authorizationRequest.setApproved(approved);
-                        if (authorizationRequest.isApproved()) {
-                            if (responseTypes.contains("token")) {
-                                return this.getImplicitGrantResponse(authorizationRequest);
-                            }
-
-                            if (responseTypes.contains("code")) {
-                                return new ModelAndView(this.getAuthorizationCodeResponse(authorizationRequest, (Authentication)principal));
-                            }
-                        }
-
-                        model.put("authorizationRequest", authorizationRequest);
-                        model.put("org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint.ORIGINAL_AUTHORIZATION_REQUEST", this.unmodifiableMap(authorizationRequest));
-                        return this.getUserApprovalPageResponse(model, authorizationRequest, (Authentication)principal);
-                    }
-                } else {
-                    throw new InsufficientAuthenticationException("User must be authenticated with Spring Security before authorization can be completed.");
-                }
-            } catch (RuntimeException var11) {
-                sessionStatus.setComplete();
-                throw var11;
+        }
+        if (!responseTypes.contains("token") && !responseTypes.contains("code")) {
+            throw new UnsupportedResponseTypeException("Unsupported response types: " + responseTypes);
+        }
+        AuthorizationRequest authorizationRequest = this.getOAuth2RequestFactory().createAuthorizationRequest(parameters);
+        try {
+            ClientDetails client = this.getClientDetailsService().loadClientByClientId(authorizationRequest.getClientId());
+            String redirectUriParameter = (String)authorizationRequest.getRequestParameters().get("redirect_uri");
+            String resolvedRedirect = this.redirectResolver.resolveRedirect(redirectUriParameter, client);
+            if (!StringUtils.hasText(resolvedRedirect)) {
+                throw new RedirectMismatchException("A redirectUri must be either supplied or preconfigured in the ClientDetails");
+            } else {
+                authorizationRequest.setRedirectUri(resolvedRedirect);
+                this.oauth2RequestValidator.validateScope(authorizationRequest, client);
+                model.put("authorizationRequest", authorizationRequest);
+                model.put("org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint.ORIGINAL_AUTHORIZATION_REQUEST", this.unmodifiableMap(authorizationRequest));
+                return new ModelAndView("oauth2Login", model);
             }
+        } catch (RuntimeException var11) {
+            sessionStatus.setComplete();
+            throw var11;
         }
     }
 

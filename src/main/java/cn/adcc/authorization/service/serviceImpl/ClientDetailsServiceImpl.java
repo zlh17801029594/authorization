@@ -44,6 +44,6 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
             }
             return clientDetails;
         }
-        return null;
+        throw new NoSuchClientException("客户端不存在");
     }
 }
