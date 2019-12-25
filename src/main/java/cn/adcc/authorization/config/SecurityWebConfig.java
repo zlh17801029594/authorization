@@ -83,7 +83,7 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/a").hasAuthority("write")
                 .antMatchers("/b").hasAuthority("read")
                 .antMatchers("/c").hasRole("read")
-                .antMatchers("/user", "/log/*", "/webjars/**", "/oauth/authorize", "/404", "/user/findAll").permitAll()
+                .antMatchers("/user", "/log/*", "/webjars/**", "/oauth/authorize", "/404", "/user/findAll", "/revokeToken").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

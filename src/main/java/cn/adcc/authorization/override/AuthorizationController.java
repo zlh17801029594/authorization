@@ -111,7 +111,7 @@ public class AuthorizationController extends AbstractEndpoint {
                 this.oauth2RequestValidator.validateScope(authorizationRequest, client);
                 model.put("authorizationRequest", authorizationRequest);
                 model.put("org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint.ORIGINAL_AUTHORIZATION_REQUEST", this.unmodifiableMap(authorizationRequest));
-                return new ModelAndView("oauth2Login", model);
+                return new ModelAndView(this.oauth2Login, model);
             }
         } catch (RuntimeException var11) {
             sessionStatus.setComplete();
@@ -455,7 +455,7 @@ public class AuthorizationController extends AbstractEndpoint {
 
     private ModelAndView handleException(Exception e, ServletWebRequest webRequest) throws Exception {
         ResponseEntity<OAuth2Exception> translate = this.getExceptionTranslator().translate(e);
-        webRequest.getResponse().setStatus(translate.getStatusCode().value());
+        /*webRequest.getResponse().setStatus(translate.getStatusCode().value());
         if (!(e instanceof ClientAuthenticationException) && !(e instanceof RedirectMismatchException)) {
             AuthorizationRequest authorizationRequest = null;
 
@@ -467,11 +467,12 @@ public class AuthorizationController extends AbstractEndpoint {
                 String redirect = this.getUnsuccessfulRedirect(authorizationRequest, (OAuth2Exception)translate.getBody(), authorizationRequest.getResponseTypes().contains("token"));
                 return new ModelAndView(new RedirectView(redirect, false, true, false));
             } catch (OAuth2Exception var8) {
-                return new ModelAndView(this.errorPage, Collections.singletonMap("error", translate.getBody()));
+                return new ModelAndView(this.oauth2Login, Collections.singletonMap("error", translate.getBody()));
             }
         } else {
-            return new ModelAndView(this.errorPage, Collections.singletonMap("error", translate.getBody()));
-        }
+            return new ModelAndView(this.oauth2Login, Collections.singletonMap("error", translate.getBody()));
+        }*/
+        return new ModelAndView(this.oauth2Login, Collections.singletonMap("error", translate.getBody()));
     }
 
     private AuthorizationRequest getAuthorizationRequestForError(ServletWebRequest webRequest) {

@@ -31,7 +31,7 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
                     sysClientDetails.getScope(),
                     sysClientDetails.getAuthorizedGrantTypes(),
                     sysClientDetails.getAuthorities(),
-                    sysClientDetails.getResourceIds());
+                    sysClientDetails.getWebServerRedirectUri());
             clientDetails.setClientSecret(sysClientDetails.getClientSecret());
             if (sysClientDetails.getAccessTokenValidity() != null) {
                 clientDetails.setAccessTokenValiditySeconds(sysClientDetails.getAccessTokenValidity());

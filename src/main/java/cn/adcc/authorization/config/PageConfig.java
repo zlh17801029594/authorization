@@ -19,7 +19,7 @@ public class PageConfig {
         return "index";
     }
 
-    @GetMapping("/oauth/confirm_access")
+    //@GetMapping("/oauth/confirm_access")
     public String confirm() {
         return "authorize";
     }
